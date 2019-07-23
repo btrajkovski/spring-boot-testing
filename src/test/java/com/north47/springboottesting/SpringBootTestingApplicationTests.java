@@ -3,6 +3,7 @@ package com.north47.springboottesting;
 import com.north47.springboottesting.models.Book;
 import com.north47.springboottesting.repository.BookRepository;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,16 @@ public class SpringBootTestingApplicationTests {
     @Autowired
     private BookRepository bookRepository;
 
-    private static final Book DEFAULT_BOOK = new Book(null, "Asimov", "Foundation", 350);
+    private Book defaultBook;
+
+    @Before
+    public void setup() {
+        defaultBook = new Book(null, "Asimov", "Foundation", 350);
+    }
 
     @Test
     public void testShouldReturnCreatedWhenValidBook() {
-        DEFAULT_BOOK.setId(null);
-        ResponseEntity<Book> bookResponseEntity = this.restTemplate.postForEntity("/books", DEFAULT_BOOK, Book.class);
+        ResponseEntity<Book> bookResponseEntity = this.restTemplate.postForEntity("/books", defaultBook, Book.class);
 
         assertThat(bookResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(bookResponseEntity.getBody().getId()).isNotNull();
@@ -38,7 +43,7 @@ public class SpringBootTestingApplicationTests {
 
     @Test
     public void testShouldFindBooksWhenExists() throws Exception {
-        Book savedBook = bookRepository.save(DEFAULT_BOOK);
+        Book savedBook = bookRepository.save(defaultBook);
 
         ResponseEntity<Book> bookResponseEntity = this.restTemplate.getForEntity("/books/" + savedBook.getId(), Book.class);
 
@@ -53,5 +58,4 @@ public class SpringBootTestingApplicationTests {
 
         assertThat(bookResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
-
 }
