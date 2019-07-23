@@ -10,9 +10,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class ValidatorsTest {
     @Test
-    public void testEmailValidator() {
+    public void testValidEmailShouldReturnTrue() {
         assertThat(isEmailValid("valid@47northlabs.com")).isTrue();
-        assertThat(isEmailValid("invalid47northlabs.com")).isFalse();
+    }
+
+    @Test
+    public void testEmailWithoutAtSignShouldReturnFalse() {
+        assertThat(isEmailValid("valid@47northlabs.com")).isTrue();
+    }
+
+    @Test
+    public void testEmailWithInvalidExtensionShouldReturnFalse() {
         assertThat(isEmailValid("invalid@47")).isFalse();
     }
 }
