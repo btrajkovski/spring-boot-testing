@@ -16,11 +16,21 @@ public class ValidatorsTest {
 
     @Test
     public void testEmailWithoutAtSignShouldReturnFalse() {
-        assertThat(isEmailValid("valid@47northlabs.com")).isTrue();
+        assertThat(isEmailValid("valid47northlabs.com")).isFalse();
     }
 
     @Test
     public void testEmailWithInvalidExtensionShouldReturnFalse() {
         assertThat(isEmailValid("invalid@47")).isFalse();
+    }
+
+    @Test
+    public void testEmailWithSpecialCharactersReturnFalse() {
+        assertThat(isEmailValid("!@#$%^")).isFalse();
+    }
+
+    @Test
+    public void testEmailWithLettersOnlyShouldReturnFalse() {
+        assertThat(isEmailValid("ajaksjkhdkh")).isFalse();
     }
 }

@@ -2,7 +2,6 @@ package com.north47.springboottesting;
 
 import com.north47.springboottesting.models.Book;
 import com.north47.springboottesting.repository.BookRepository;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,10 +51,22 @@ public class SpringBootTestingApplicationTests {
     }
 
     @Test
-    public void testShouldReturn404WhenBookMissing() throws Exception {
+    public void testShouldReturn404WhenBookMissing() {
         Long nonExistingId = 999L;
         ResponseEntity<Book> bookResponseEntity = this.restTemplate.getForEntity("/books/" + nonExistingId, Book.class);
 
         assertThat(bookResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    public void testShouldReturn400WhenInvalidIdFormat() {
+        // given
+        String invalidIdFormat = "1234d";
+
+        // when
+        ResponseEntity<Book> responseEntity = this.restTemplate.getForEntity("/books/" + invalidIdFormat, Book.class);
+
+        // then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 }
