@@ -22,14 +22,21 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<Book> findBookById(@PathVariable Long id) {
+    public ResponseEntity<Book> findBookById(@PathVariable Long id) {
         return bookRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<Book> testMethod(@PathVariable Long id) {
+        Integer BOJAN = 1;
+        System.out.println(BOJAN);
+        throw new NullPointerException();
+    }
+
     @PostMapping
-    private ResponseEntity<Book> addBook(@RequestBody Book book) {
+    public ResponseEntity<Book> addBook(@RequestBody Book book) {
         if (book.getId() != null) {
             return ResponseEntity.badRequest().build();
         }
