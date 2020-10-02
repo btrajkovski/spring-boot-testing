@@ -1,6 +1,7 @@
 package com.north47.springboottesting;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.north47.springboottesting.models.Author;
 import com.north47.springboottesting.models.Book;
 import com.north47.springboottesting.repository.BookRepository;
 import org.hamcrest.Matchers;
@@ -35,7 +36,8 @@ public class BookControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private static final Book DEFAULT_BOOK = new Book(null, "Asimov", "Foundation", 350);
+    private Author author = new Author("Isaak", "Asimov");
+    private final Book DEFAULT_BOOK = new Book(null, author, "Foundation", 350);
 
     @Test
     public void testShouldReturnCreatedWhenValidBook() throws Exception {

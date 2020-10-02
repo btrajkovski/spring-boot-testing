@@ -1,5 +1,6 @@
 package com.north47.springboottesting;
 
+import com.north47.springboottesting.models.Author;
 import com.north47.springboottesting.models.Book;
 import com.north47.springboottesting.repository.BookRepository;
 import org.junit.Before;
@@ -24,11 +25,13 @@ public class SpringBootTestingApplicationTests {
     @Autowired
     private BookRepository bookRepository;
 
+    private Author author=new Author("Isaak","Asimov");
     private Book defaultBook;
 
     @Before
     public void setup() {
-        defaultBook = new Book(null, "Asimov", "Foundation", 350);
+        defaultBook = new Book(null, null, "Foundation", 350);
+        author.addBook(defaultBook);
     }
 
     @Test
