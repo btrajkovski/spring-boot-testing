@@ -1,8 +1,10 @@
 package com.north47.springboottesting;
 
+import com.north47.springboottesting.models.Author;
 import com.north47.springboottesting.models.Book;
 import com.north47.springboottesting.repository.BookRepository;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,7 +28,13 @@ public class SpringBootTestingApplicationTests {
     @Autowired
     private BookRepository bookRepository;
 
-    private static final Book DEFAULT_BOOK = new Book(null, "Asimov", "Foundation", 350);
+    private Author author=new Author("Isaak","Asimov");
+    private final Book DEFAULT_BOOK = new Book(null,null, "Foundation", 350);
+
+    @Before
+    public void setup() {
+        author.addBook(DEFAULT_BOOK);
+    }
 
     @Test
     public void testShouldReturnCreatedWhenValidBook() {

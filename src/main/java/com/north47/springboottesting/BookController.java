@@ -3,17 +3,17 @@ package com.north47.springboottesting;
 import com.north47.springboottesting.models.Book;
 import com.north47.springboottesting.repository.BookRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/books")
+@CrossOrigin
 public class BookController {
     private BookRepository bookRepository;
 
@@ -21,11 +21,22 @@ public class BookController {
         this.bookRepository = bookRepository;
     }
 
+    @GetMapping
+    private ResponseEntity<Page<Book>> findAllBooks(Pageable pageable) {
+        return ResponseEntity.ok(bookRepository.findAll(pageable));
+    }
+
     @GetMapping("/{id}")
     private ResponseEntity<Book> findBookById(@PathVariable Long id) {
         return bookRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @DeleteMapping("/{id}")
+    private ResponseEntity deleteBookById(@PathVariable Long id) {
+        bookRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping
