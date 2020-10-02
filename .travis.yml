@@ -1,0 +1,15 @@
+language: java
+jdk: openjdk8
+ 
+addons:
+  sonarcloud:
+    organization: "btrajkovski-github"
+    token:
+      secure: "68726d5d50e3dd6e63905ee9790627d894d69076" # encrypted value of your token
+      
+before_install:
+  - chmod +x mvnw
+ 
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=com.north47.springboottesting:spring-boot-testing:master

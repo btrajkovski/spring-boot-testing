@@ -14,8 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Collections;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -29,17 +27,17 @@ public class SpringBootTestingApplicationTests {
     private BookRepository bookRepository;
 
     private Author author=new Author("Isaak","Asimov");
-    private final Book DEFAULT_BOOK = new Book(null,null, "Foundation", 350);
+    private Book defaultBook;
 
     @Before
     public void setup() {
-        author.addBook(DEFAULT_BOOK);
+        defaultBook = new Book(null, null, "Foundation", 350);
+        author.addBook(defaultBook);
     }
 
     @Test
     public void testShouldReturnCreatedWhenValidBook() {
-        DEFAULT_BOOK.setId(null);
-        ResponseEntity<Book> bookResponseEntity = this.restTemplate.postForEntity("/books", DEFAULT_BOOK, Book.class);
+        ResponseEntity<Book> bookResponseEntity = this.restTemplate.postForEntity("/books", defaultBook, Book.class);
 
         assertThat(bookResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(bookResponseEntity.getBody().getId()).isNotNull();
@@ -48,7 +46,7 @@ public class SpringBootTestingApplicationTests {
 
     @Test
     public void testShouldFindBooksWhenExists() throws Exception {
-        Book savedBook = bookRepository.save(DEFAULT_BOOK);
+        Book savedBook = bookRepository.save(defaultBook);
 
         ResponseEntity<Book> bookResponseEntity = this.restTemplate.getForEntity("/books/" + savedBook.getId(), Book.class);
 
@@ -63,5 +61,4 @@ public class SpringBootTestingApplicationTests {
 
         assertThat(bookResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
-
 }
